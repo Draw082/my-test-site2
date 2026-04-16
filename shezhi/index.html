@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>蛇纸记录下载页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(145deg, #f5f7fc 0%, #e9eef4 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .card {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+            padding: 2rem 1.8rem 2.5rem;
+            text-align: center;
+            transition: transform 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .icon {
+            font-size: 3.8rem;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1a2a3a, #2c3e50);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -0.3px;
+        }
+
+        .message {
+            background: #fef9e3;
+            border-left: 6px solid #f4b942;
+            padding: 1.2rem 1.2rem;
+            border-radius: 1rem;
+            margin: 1.5rem 0 1.8rem;
+            text-align: left;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        .message p {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #2d3e4f;
+            font-weight: 500;
+        }
+
+        .warning-badge {
+            display: inline-block;
+            background: #e63946;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: #1f6392;
+            color: white;
+            border: none;
+            font-size: 1.25rem;
+            font-weight: 600;
+            padding: 0.9rem 2.2rem;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(31, 99, 146, 0.3);
+            transition: all 0.2s ease;
+            margin: 0.5rem 0 1rem;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .btn-download:hover {
+            background: #0e4b6e;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 22px rgba(31, 99, 146, 0.4);
+        }
+
+        .btn-download:active {
+            transform: translateY(1px);
+        }
+
+        .file-hint {
+            font-size: 0.75rem;
+            color: #5f6c7a;
+            background: #f0f2f5;
+            display: inline-block;
+            padding: 0.3rem 0.9rem;
+            border-radius: 30px;
+            margin-top: 1rem;
+        }
+
+        .footer-note {
+            margin-top: 1.8rem;
+            font-size: 0.7rem;
+            color: #7e8c9e;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1.2rem;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 1.5rem;
+            }
+            h1 {
+                font-size: 1.6rem;
+            }
+            .btn-download {
+                font-size: 1.1rem;
+                padding: 0.7rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="icon">🐍</div>
+    <h1>蛇纸记录</h1>
+    <div class="message">
+        <div class="warning-badge">⚠️ 重要通知</div>
+        <p>本应用是最小可使用版本，目前尚在测试，请使用电脑访问下载apk文件。<br>
+       <strong>你只能使用ADB安装，手机直接安装将报错失败。</strong></p>
+    </div>
+
+    <!-- 下载按钮：直接指向同目录下的 wanna.apk 并强制下载 -->
+    <a href="./wanno.apk" download="wanno.apk" class="btn-download" id="downloadLink">
+        ⬇️ 下载 APK
+    </a>
+    <div class="file-hint">
+        📁 文件：wanno.apk &nbsp;|&nbsp; 版本：v4.0.0
+    </div>
+    <div class="footer-note">
+        本文件为测试版本，DO ONLINE不提供技术支持。<br>
+      了解更多请访问官网https://official.donline.top/。
+    </div>
+</div>
+
+<script>
+    // 备选: 确保即使在某些不支持 download 属性的浏览器中也能触发下载
+    // 但大多数现代移动/桌面浏览器均支持 download 属性，且我们使用 <a> 原生行为即可。
+    // 另外增加一层稳健处理：如果用户长按或某些边缘情况，仍然保持指向正确路径。
+    // 同时为了避免缓存或路径问题，可以在点击时动态生成链接（保证相对路径正确）。
+    // 但直接用静态 a 标签足够简单可靠。以下增加一段日志，并确保如果点击失效时控制台提示。
+    (function() {
+        const downloadBtn = document.getElementById('downloadLink');
+        if (downloadBtn) {
+            // 可选的额外提醒：点击后手动确认是由浏览器处理的，用户会看到下载弹窗。
+            downloadBtn.addEventListener('click', function(e) {
+                // 无需额外拦截，让原生行为触发即可。
+                // 如果文件不存在，浏览器会报错，但前端无法避免。我们信任文件存在。
+                console.log('准备下载: wanna.apk (同一目录)');
+                // 可以增加简单的自定义提示（不干扰下载）
+                // 不做 e.preventDefault 保持原生下载流程。
+            });
+        }
+
+        // 针对老式或特殊webview，如果 download 属性失效（极少情况），提供后备JS下载方式。
+        // 但为了避免双重下载，仅在确认 href 无法触发时做后备？复杂。采用最稳方案：保留原生 a 标签。
+        // 完全满足“纯前端 + 用户手动确认下载”。
+    })();
+</script>
+</body>
+</html>
